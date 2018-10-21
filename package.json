@@ -1,0 +1,43 @@
+{
+  "name": "react-fundamentals",
+  "version": "1.0.0",
+  "description": "two profiles enter, one profile leaves",
+  "main": "index.js",
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+  },
+  "scripts": {
+    "wp:watch": "webpack-dev-server --open",
+    "wp:build": "webpack"
+  },
+  "keywords": [
+    "react",
+    "github",
+    "javascript",
+    "es5"
+  ],
+  "author": "Aaron Zemetres",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "prop-types": "^15.6.2",
+    "react": "16.5.2",
+    "react-dom": "16.5.2",
+    "react-router-dom": "^4.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "7.1.2",
+    "@babel/preset-env": "7.1.0",
+    "@babel/preset-react": "7.0.0",
+    "babel-loader": "8.0.4",
+    "css-loader": "1.0.0",
+    "html-webpack-plugin": "3.2.0",
+    "style-loader": "0.23.1",
+    "webpack": "4.20.2",
+    "webpack-cli": "3.1.2",
+    "webpack-dev-server": "3.1.9"
+  }
+}
