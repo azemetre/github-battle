@@ -1,8 +1,8 @@
-require('dotenv').config();
 var axios = require('axios');
 
-var id = process.env.ID;
-var sec = process.env.SECRET;
+// use github secrets to ignore rate limit
+var id = '';
+var sec = '';
 var params = '?client_id=' + id + "&client_secret=" + sec;
 
 function getProfile (username) {
@@ -26,7 +26,7 @@ function calculateScore (profile, repos) {
   var followers = profile.followers;
   var totalStars = getStarCount(repos);
 
-  return (follows * 3) + totalStars;
+  return (followers * 3) + totalStars;
 }
 
 function handleError (error) {
