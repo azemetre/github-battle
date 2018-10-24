@@ -28,7 +28,7 @@ function calculateScore (profile, repos) {
   var publicRepoCount = profile.public_repos;
   var publicGistCount = profile.public_gists;
 
-  return (followers * 3) + totalStars + (publicRepoCount * 0.3) + (publicGistCount * 0.3);
+  return (followers * 3) + totalStars + (publicRepoCount * 0.3) + (publicGistCount * 0.15);
 }
 
 function handleError (error) {
