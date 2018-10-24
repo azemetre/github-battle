@@ -11,7 +11,9 @@
   },
   "scripts": {
     "wp:watch": "webpack-dev-server --open",
-    "wp:build": "webpack"
+    "wp:build": "webpack",
+    "build": "NODE_ENV='production' webpack",
+    "build-for-windows": "SET NODE_ENV='production' && webpack"
   },
   "keywords": [
     "react",
