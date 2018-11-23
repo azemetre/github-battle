@@ -2,27 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import PlayerPreview from './PlayerPreview';
+
 class PlayerInput extends React.Component {
-  constructor(props) {
-    super(props);
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+  };
 
-    this.state = {
-      username: ''
-    }
+  static defaultProps = {
+    label: 'Username',
+  };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+  state = {
+    username: ''
+  };
 
-  handleChange(event) {
+  handleChange = (event) => {
     const value = event.target.value;
-
     this.setState(() => ({username: value}));
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
-
     this.props.onSubmit(
       this.props.id,
       this.state.username
@@ -58,27 +60,15 @@ class PlayerInput extends React.Component {
   }
 }
 
-PlayerInput.propTypes = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired
-}
 class Battle extends React.Component {
-  constructor(props) {
-    super(props);
+  state = {
+    playerOneName: '',
+    playerTwoName: '',
+    playerOneImage: null,
+    playerTwoImage: null
+  };
 
-    this.state = {
-      playerOneName: '',
-      playerTwoName: '',
-      playerOneImage: null,
-      playerTwoImage: null
-    }
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleReset = this.handleReset.bind(this);
-  }
-
-  handleSubmit(id, username) {
+  handleSubmit = (id, username) => {
     this.setState(() => ({
       // computed property names
       [id + 'Name']: username,
@@ -86,7 +76,7 @@ class Battle extends React.Component {
     }));
   }
 
-  handleReset(id) {
+  handleReset = (id) => {
     this.setState(() => ({
       // computed property names
       [id + 'Name']: '',
