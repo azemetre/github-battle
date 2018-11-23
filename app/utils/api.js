@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 
 // use github secrets to ignore rate limit
 const id = '';
@@ -41,17 +41,15 @@ function sortPlayers (players) {
   return players.sort((a,b) => b.score - a.score);
 }
 
-module.exports = {
-  battle: function (players) {
-    return Promise.all(players.map(getUserData))
-      .then(sortPlayers)
-      .catch(handleError);
-  },
+export function battle (players) {
+  return Promise.all(players.map(getUserData))
+    .then(sortPlayers)
+    .catch(handleError);
+}
 
-  fetchPopularRepos (language) {
-    var encodedURI = window.encodeURI(`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`);
+export function fetchPopularRepos (language) {
+  const encodedURI = window.encodeURI(`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`);
 
-    return axios.get(encodedURI)
-      .then(({ data }) => data.items)
-  }
-};
+  return axios.get(encodedURI)
+    .then(({ data }) => data.items)
+}
