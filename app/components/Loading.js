@@ -1,49 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, useRef } from 'react';
 
 const styles = {
   content: {
     textAlign: 'center',
+    position: 'absolute',
+    left: '0',
+    right: '0',
+    marginTop: '20px',
     fontSize: '35px'
   }
 };
 
-class Loading extends React.Component {
-  static propTypes = {
-    text: PropTypes.string.isRequired,
-    speed: PropTypes.number.isRequired
-  };
-  static defaultProps = {
-    text: 'Loading',
-    speed: 300
-  };
+function Loading ({ text = 'Loading', speed = 300 }) {
+  const [content, setContent] = useState(text);
 
-  state = {
-    text: this.props.text
-  };
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      setContent(
+        content === text + '...'
+          ? text
+          : content + '.'
+      )
+    }, speed)
 
-  componentDidMount() {
-    const { text, speed } = this.props;
-    const stopper = text + '...';
+    return () => window.clearTimeout(timeout);
+  }, [content]);
 
-    this.interval = window.setInterval(() => {
-      this.state.text === stopper
-        ? this.setState(() => ({ text: text }))
-        : this.setState((prevState) => ({ text: prevState.text + '.' }));
-    }, speed);
-  }
-
-  componentWillUnmount() {
-    window.clearInterval(this.interval);
-  }
-
-  render() {
-    return (
-      <p style={styles.content}>
-        {this.state.text}
-      </p>
-    );
-  }
+  return (
+    <p style={styles.content}>
+      {content}
+    </p>
+  );
 }
 
 export default Loading;

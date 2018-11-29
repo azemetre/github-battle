@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { battle } from '../utils/api';
 import PlayerPreview from './PlayerPreview';
 import Loading from './Loading';
+import { unstable_createResource as createResource } from 'react-cache';
 
 function Profile ({ info }) {
   return (
@@ -20,6 +21,10 @@ function Profile ({ info }) {
       </ul>
     </PlayerPreview>
   );
+}
+
+Profile.propTypes = {
+  info: PropTypes.object.isRequired,
 }
 
 function Player ({ label, score, profile }) {
@@ -38,67 +43,41 @@ Player.propTypes = {
   profile: PropTypes.object.isRequired
 }
 
-class Results extends React.Component {
-  state = {
-    winner: null,
-    loser: null,
-    error: null,
-    loading: true
-  };
+const battleResource = createResource((search) => {
+  const { playerOneName, playerTwoName } = queryString.parse(search);
 
-  async componentDidMount () {
-    const { playerOneName, playerTwoName } = queryString.parse(this.props.location.search);
+  return battle([playerOneName, playerTwoName]);
+});
 
-    const players = await battle([
-      playerOneName,
-      playerTwoName
-    ]);
+function Results () {
+  const players = battleResource.read(location.search);
 
-    if (players === null) {
-      return this.setState(() => ({
-        error: 'Looks like there was an error. Check that both users exist on Github.',
-        loading: false
-      }));
-    }
-
-    this.setState(() => ({
-      error: null,
-      winner: players[0],
-      loser: players[1],
-      loading: false
-    }));
-  }
-
-  render() {
-    const { error, winner, loser, loading } = this.state;
-
-    if (loading === true) {
-      return <Loading />
-    }
-
-    if (error) {
-      return (
-        <div>
-          <p>{error}</p>
-          <Link to='/battle'>Reset</Link>
-        </div>
-      )
-    }
+  if (players === null) {
     return (
-      <div className='row'>
-        <Player
-          label='Winner'
-          score={winner.score}
-          profile={winner.profile}
-        />
-        <Player
-          label='Loser'
-          score={loser.score}
-          profile={loser.profile}
-        />
+      <div>
+        <p>Looks like there was an error. Check that both users exist on Github.</p>
+        <Link to='/battle'>Reset</Link>
       </div>
-    )
+    );
   }
+
+  const winner = players[0];
+  const loser = players[1];
+
+  return (
+    <div className='row'>
+      <Player
+        label='Winner'
+        score={winner.score}
+        profile={winner.profile}
+      />
+      <Player
+        label='Loser'
+        score={loser.score}
+        profile={loser.profile}
+      />
+    </div>
+  )
 }
 
 export default Results;
